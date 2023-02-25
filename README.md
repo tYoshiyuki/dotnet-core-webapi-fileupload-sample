@@ -1,5 +1,5 @@
 # dotnet-core-webapi-fileupload-sample
-ASP.NET Coreのファイルアップロードを行うAPIのサンプル
+ASP.NET Core の WebAPI で ファイルアップロードを行うサンプル
 
 ## Feature
 - .NET6
