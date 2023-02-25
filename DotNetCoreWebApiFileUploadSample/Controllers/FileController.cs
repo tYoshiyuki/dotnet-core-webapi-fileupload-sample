@@ -15,6 +15,7 @@ namespace DotNetCoreWebApiFileUploadSample.Controllers
         /// </summary>
         /// <param name="request"><see cref="FileUploadRequest"/></param>
         /// <returns><see cref="FileUploadResponse"/></returns>
+        /// <remarks>サーバサイドでアップロード情報を参照しレスポンスへ返却します。サンプル実装のため実際のアップロード処理は何も行いません。</remarks>
         [HttpPost("Upload")]
         public IActionResult Upload([FromForm] FileUploadRequest request)
         {
@@ -31,6 +32,7 @@ namespace DotNetCoreWebApiFileUploadSample.Controllers
         /// </summary>
         /// <param name="request"><see cref="FileUploadListRequest"/></param>
         /// <returns><see cref="FileUploadListResponse"/></returns>
+        /// <remarks>サーバサイドでアップロード情報を参照しレスポンスへ返却します。サンプル実装のため実際のアップロード処理は何も行いません。</remarks>
         [HttpPost("UploadList")]
         public IActionResult UploadList([FromForm] FileUploadListRequest request)
         {
