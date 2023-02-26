@@ -12,17 +12,14 @@ namespace DotNetCoreWebApiFileUploadSample.Controllers
     [ApiController]
     public class LegacyFileController : ControllerBase
     {
-        private readonly HttpContext httpContext;
         private readonly string rootPath;
 
         /// <summary>
         /// コンストラクタ
         /// </summary>
-        /// <param name="httpContextAccessor"><see cref="IHttpContextAccessor"/></param>
         /// <param name="environment"><see cref="IHostEnvironment"/></param>
-        public LegacyFileController(IHttpContextAccessor httpContextAccessor, IHostEnvironment environment)
+        public LegacyFileController(IHostEnvironment environment)
         {
-            httpContext = httpContextAccessor.HttpContext;
             rootPath = environment.ContentRootPath;
         }
 
@@ -35,8 +32,9 @@ namespace DotNetCoreWebApiFileUploadSample.Controllers
         public async Task<IActionResult> Upload()
         {
             var provider = new MultipartFormDataStreamProvider(rootPath);
-            var content = new StreamContent(httpContext.Request.Body);
-            content.Headers.ContentType = MediaTypeHeaderValue.Parse(httpContext.Request.ContentType);
+
+            var content = new StreamContent(this.Request.Body);
+            content.Headers.ContentType = MediaTypeHeaderValue.Parse(this.Request.ContentType);
 
             // ローカルディスク上にファイルを保存
             await content.ReadAsMultipartAsync(provider);
