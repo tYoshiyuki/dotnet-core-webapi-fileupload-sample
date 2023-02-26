@@ -8,8 +8,9 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.AspNet.WebApi.Client" Version="5.2.9" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
-    <InternalsVisibleTo Include ="DotNetCoreWebApiFileUploadSample.Test"/>
+    <InternalsVisibleTo Include="DotNetCoreWebApiFileUploadSample.Test" />
   </ItemGroup>
 
 </Project>
