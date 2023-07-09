@@ -11,13 +11,13 @@ namespace DotNetCoreWebApiFileUploadSample.Test.Controllers
     /// </summary>
     internal class LegacyFileControllerTest
     {
-        private HttpClient client;
+        private HttpClient _client = null!;
 
         [OneTimeSetUp]
         public void Init()
         {
             var factory = new TestWebApplicationFactory();
-            client = factory.CreateClient();
+            _client = factory.CreateClient();
         }
 
         /// <summary>
@@ -29,7 +29,7 @@ namespace DotNetCoreWebApiFileUploadSample.Test.Controllers
             // Arrange
             string filePath = "SampleFile.txt";
 
-            await using var fs = File.OpenRead(filePath);
+            await using FileStream fs = File.OpenRead(filePath);
             using var fileContent = new StreamContent(fs);
             
             var content = new MultipartFormDataContent
@@ -39,13 +39,13 @@ namespace DotNetCoreWebApiFileUploadSample.Test.Controllers
             };
 
             // Act
-            var response = await client.PostAsync("api/LegacyFile/Upload", content);
+            HttpResponseMessage response = await _client.PostAsync("api/LegacyFile/Upload", content);
 
             // Assert
             Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.OK));
 
             string json = response.Content.ReadAsStringAsync().Result;
-            var result = JsonConvert.DeserializeObject<FileUploadResponse>(json);
+            FileUploadResponse result = JsonConvert.DeserializeObject<FileUploadResponse>(json);
             Assert.Multiple(() =>
             {
                 Assert.That(result.FileMetaData, Is.EqualTo("This is SampleFile MetaData."));
