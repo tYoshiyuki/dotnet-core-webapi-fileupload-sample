@@ -27,7 +27,7 @@ namespace DotNetCoreWebApiFileUploadSample.Test.Controllers
         public async Task Upload_OK()
         {
             // Arrange
-            var filePath = "SampleFile.txt";
+            string filePath = "SampleFile.txt";
 
             await using var fs = File.OpenRead(filePath);
             using var fileContent = new StreamContent(fs);
@@ -44,7 +44,7 @@ namespace DotNetCoreWebApiFileUploadSample.Test.Controllers
             // Assert
             Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.OK));
 
-            var json = response.Content.ReadAsStringAsync().Result;
+            string json = response.Content.ReadAsStringAsync().Result;
             var result = JsonConvert.DeserializeObject<FileUploadResponse>(json);
             Assert.Multiple(() =>
             {
