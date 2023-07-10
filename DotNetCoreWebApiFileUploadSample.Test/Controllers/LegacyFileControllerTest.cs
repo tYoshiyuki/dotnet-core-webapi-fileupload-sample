@@ -27,7 +27,7 @@ namespace DotNetCoreWebApiFileUploadSample.Test.Controllers
         public async Task Upload_OK()
         {
             // Arrange
-            string filePath = "SampleFile.txt";
+            const string filePath = "SampleFile.txt";
 
             await using FileStream fs = File.OpenRead(filePath);
             using var fileContent = new StreamContent(fs);
