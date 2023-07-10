@@ -9,7 +9,7 @@ ASP.NET Core の WebAPI で ファイルアップロードを行うサンプル
 - ASP.NET Core では、`IFormFile` を利用することで `multipart/form-data` のファイルをアップロードすることが出来ます。
   - `FileController` にサンプル実装を行っています。
 - ASP.NET Web API で利用していた `MultipartFormDataStreamProvider` は使う必要が無くなっています。
-  - `LegacyFileController` にサンプル実装を行っています。
+  - `LegacyFileController` に `MultipartFormDataStreamProvider` を用いたサンプル実装を行っています。(※ 旧方式のため非推奨です)
 
 ## Reference
 - ASP.NET Core の ファイルアップロード
