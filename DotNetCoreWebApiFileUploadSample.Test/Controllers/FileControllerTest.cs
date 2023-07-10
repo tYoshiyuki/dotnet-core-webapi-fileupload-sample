@@ -11,13 +11,13 @@ namespace DotNetCoreWebApiFileUploadSample.Test.Controllers
     /// </summary>
     internal class FileControllerTest
     {
-        private HttpClient client;
+        private HttpClient _client = null!;
 
         [OneTimeSetUp]
         public void Init()
         {
-            var factory = new TestWebApplicationFactory();
-            client = factory.CreateClient();
+            TestWebApplicationFactory factory = new();
+            _client = factory.CreateClient();
         }
 
         /// <summary>
@@ -27,25 +27,25 @@ namespace DotNetCoreWebApiFileUploadSample.Test.Controllers
         public async Task Upload_OK()
         {
             // Arrange
-            var filePath = "SampleFile.txt";
+            string filePath = "SampleFile.txt";
 
-            await using var fs = File.OpenRead(filePath);
-            using var fileContent = new StreamContent(fs);
+            await using FileStream fs = File.OpenRead(filePath);
+            using StreamContent fileContent = new(fs);
             
-            var content = new MultipartFormDataContent
+            MultipartFormDataContent content = new()
             {
                 {new StringContent("This is SampleFile MetaData.", Encoding.UTF8), nameof(FileUploadRequest.MetaData)},
                 { fileContent, nameof(FileUploadRequest.File), "SampleFile.txt" }
             };
 
             // Act
-            var response = await client.PostAsync("api/File/Upload", content);
+            HttpResponseMessage response = await _client.PostAsync("api/File/Upload", content);
 
             // Assert
             Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.OK));
 
-            var json = response.Content.ReadAsStringAsync().Result;
-            var result = JsonConvert.DeserializeObject<FileUploadResponse>(json);
+            string json = response.Content.ReadAsStringAsync().Result;
+            FileUploadResponse? result = JsonConvert.DeserializeObject<FileUploadResponse>(json);
             Assert.Multiple(() =>
             {
                 Assert.That(result.FileMetaData, Is.EqualTo("This is SampleFile MetaData."));
@@ -61,14 +61,14 @@ namespace DotNetCoreWebApiFileUploadSample.Test.Controllers
         public async Task UploadList_Ok()
         {
             // Arrange
-            var filePath = "SampleFile.txt";
+            string filePath = "SampleFile.txt";
 
-            await using var fs1 = File.OpenRead(filePath);
-            await using var fs2 = File.OpenRead(filePath);
-            using var fileContent1 = new StreamContent(fs1);
-            using var fileContent2 = new StreamContent(fs2);
+            await using FileStream fs1 = File.OpenRead(filePath);
+            await using FileStream fs2 = File.OpenRead(filePath);
+            using StreamContent fileContent1 = new(fs1);
+            using StreamContent fileContent2 = new(fs2);
 
-            var content = new MultipartFormDataContent
+            MultipartFormDataContent content = new()
             {
                 {new StringContent("This is SampleFile MetaData 1.", Encoding.UTF8), nameof(FileUploadListRequest.MetaDataList)},
                 {new StringContent("This is SampleFile MetaData 2.", Encoding.UTF8), nameof(FileUploadListRequest.MetaDataList)},
@@ -77,13 +77,13 @@ namespace DotNetCoreWebApiFileUploadSample.Test.Controllers
             };
 
             // Act
-            var response = await client.PostAsync("api/File/UploadList", content);
+            HttpResponseMessage response = await _client.PostAsync("api/File/UploadList", content);
 
             // Assert
             Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.OK));
 
-            var json = response.Content.ReadAsStringAsync().Result;
-            var result = JsonConvert.DeserializeObject<FileUploadListResponse>(json);
+            string json = response.Content.ReadAsStringAsync().Result;
+            FileUploadListResponse? result = JsonConvert.DeserializeObject<FileUploadListResponse>(json);
             Assert.Multiple(() =>
             {
                 Assert.That(result.FileMetaDataList, Is.EqualTo(new[] { "This is SampleFile MetaData 1.", "This is SampleFile MetaData 2." }));
