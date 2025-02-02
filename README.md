@@ -2,7 +2,7 @@
 ASP.NET Core の WebAPI で ファイルアップロードを行うサンプル
 
 ## Feature
-- .NET6
+- .NET8
 - ASP.NET Core
 
 ## Note
